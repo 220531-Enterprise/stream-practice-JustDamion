@@ -53,10 +53,14 @@ public class StreamTest {
         ****************************************************************************/
 
         
-        // Code your Solution here
+        System.out.println("========== QUESTION #1 ==========");
+        
+        Optional<Student> possiblyBob = students.stream()
+        		.filter(s -> s.getName().equals("Bob"))
+        		.findFirst();
+        
+        System.out.println(possiblyBob.isPresent() ? possiblyBob.get().getName() : "No Student Found");
 
-        
-        
         
         /***************************************************************************
          (2) Get the student with matching address "1235" and print their name to the console.
@@ -65,12 +69,15 @@ public class StreamTest {
              doesn't exist. Resource: https://www.geeksforgeeks.org/java-8-optional-class/
         ****************************************************************************/
 
-        
-        // Code your Solution here
 
+        System.out.println("========== QUESTION #2 ==========");
         
+        Optional<Student> s1 = students.stream()
+        		.filter(s -> s.getAddress().getZipcode().equals("1235"))
+        		.findFirst();
         
-        
+        System.out.println(s1.isPresent() ? s1.get().getName() : "No Student Found");
+
         
         /****************************************************************************
          (3) Get all the students that have the mobile number "3333" and print their
@@ -78,10 +85,17 @@ public class StreamTest {
         *****************************************************************************/
 
         
-        // Code your Solution here
-
+        System.out.println("========== QUESTION #3 ==========");
         
+        List<Student> studentsWith3333 = students.stream()
+        		// make sure that only the students with the mobile number 3333 get stored here
+        		.filter(s -> s.getMobileNumbers() // .getMobileNumbers returns a list!
+        			.stream() // below we're looking for a match of "3333" in the student's list of MobileNumbers
+        			.anyMatch(num -> num.getNumber().equals("3333")))
+        		.collect(Collectors.toList());
         
+        // call the forEach() method on the collection and print the name of each student
+        studentsWith3333.forEach(s -> System.out.println(s.getName()));
         
         
         /***************************************************************************
@@ -90,10 +104,15 @@ public class StreamTest {
          ***************************************************************************/
 
         
-        // Code your Solution here
+        System.out.println("========== QUESTION #4 ==========");
         
+        List<Student> studentsWith1233or1234 = students.stream()
+        		.filter(s -> s.getMobileNumbers()
+        			.stream()
+        			.anyMatch(num -> num.getNumber().equals("1233") || num.getNumber().equals("1234")))
+        		.collect(Collectors.toList());
         
-        
+        studentsWith1233or1234.forEach(s -> System.out.println(s.getName()));
         
         
         /***************************************************************************
@@ -101,6 +120,10 @@ public class StreamTest {
 	         Hint: Use Collectors.toList(). Print it to the console. 
 	         Resource: https://www.geeksforgeeks.org/collectors-tolist-method-in-java-with-examples/
         ****************************************************************************/
+        
+        
+        System.out.println("========== QUESTION #5 ==========");
+        
         TempStudent tmpStud1 = new TempStudent(
             "Bob1",
             201,
@@ -115,11 +138,12 @@ public class StreamTest {
  
         List<TempStudent> tmpStudents = Arrays.asList(tmpStud1, tmpStud2);
         
-        // Code your Solution here, don't touch the code above
+        List<Student> studentList = tmpStudents.stream()
+        		.map(s -> new Student(s.name, s.age, s.address, s.mobileNumbers))
+        		.collect(Collectors.toList());
  
-
         
-        
+        studentList.forEach(s -> System.out.println(s.getName()));
         
  
         /***************************************************************************
@@ -129,10 +153,13 @@ public class StreamTest {
         ****************************************************************************/
 
         
-        // Code your Solution here
+        System.out.println("========== QUESTION #6 ==========");
+        
+        List<String> studentNames = studentList.stream()
+        		.map(s -> s.getName())
+        		.collect(Collectors.toList());
 
-        
-        
+        System.out.println(studentNames);
         
         
         /***************************************************************************
@@ -141,45 +168,49 @@ public class StreamTest {
         ****************************************************************************/
 
         
-        // Code your Solution here
-
+        System.out.println("========== QUESTION #7 ==========");
         
+        String name = studentNames.stream()
+        		.collect(Collectors.joining("\n"));
         
+        System.out.println(name);
         
         
         /****************************************************************************
          (8) Change all the Strings within the List<String> nameList to Upper Case.
              Print it to the screen.
         *****************************************************************************/
+        
+        
+        System.out.println("========== QUESTION #8 ==========");
+        
         List<String> nameList =
             Arrays.asList("Bob", "Danny", "Alice", "Eddie", "Cathy");
  
-        // Code your Solution here, don't touch the code above
+        List<String> upperCaseNameList = nameList.stream()
+        	.map(String::toUpperCase)
+        	.collect(Collectors.toList());
 
-        
-        
+        upperCaseNameList.forEach(s -> System.out.println(s));
         
         
         /****************************************************************************
          (9) Sort List<String> namesList by natural order.
              Hint: Research .sorted() method https://www.geeksforgeeks.org/stream-sorted-in-java/#:~:text=Stream%20sorted()%20returns%20a,streams%2C%20no%20stability%20is%20guaranteed.
          *****************************************************************************/
+        
+        
+        System.out.println("========== QUESTION #9 ==========");
+        
         List<String> namesList =
             Arrays.asList("Bob", "Danny", "Alice", "Eddie", "Cathy");
  
-        // Code your Solution here, don't touch the code above
-
-
+        List<String> sortedNameList = namesList.stream()
+        	.sorted()
+        	.collect(Collectors.toList());
+        
+        sortedNameList.forEach(s -> System.out.println(s));
         
         
- 
     }
-    
-    
 }
-
-
-
-
-
-
